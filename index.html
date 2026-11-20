@@ -1,0 +1,632 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Legal Sphere - Legal Advisory and Documentation</title> 
+<style> 
+:root { 
+  --bg: #f4f6fa; 
+  --card: #ffffff; 
+  --text: #1c2333; 
+  --accent: #1f3a6e; 
+  --muted: #667085; 
+  --border: #d5dae3; 
+  --ok: #1a7f4b; 
+  --err: #c0392b; 
+} 
+body.dark { 
+  --bg: #12161f; 
+  --card: #1b2130; 
+  --text: #e8ecf4; 
+  --accent: #6c9bff; 
+  --muted: #9aa4b8; 
+  --border: #2d3548; 
+} 
+* { box-sizing: border-box; } 
+body { 
+  margin: 0; 
+  font-family: Arial, sans-serif; 
+  background: var(--bg); 
+  color: var(--text); 
+  transition: background 0.3s, color 0.3s; 
+  
+} 
+header { 
+background: var(--accent); 
+color: #fff; 
+padding: 16px 24px; 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+flex-wrap: wrap; 
+gap: 10px; 
+} 
+header h1 { margin: 0; font-size: 24px; } 
+header p { margin: 2px 0 0; font-size: 13px; opacity: 0.85; } 
+button { 
+background: var(--accent); 
+color: #fff; 
+border: none; 
+padding: 9px 16px; 
+border-radius: 6px; 
+cursor: pointer; 
+font-size: 14px; 
+} 
+button:hover { opacity: 0.88; } 
+button:disabled { opacity: 0.45; cursor: not-allowed; } 
+header button { background: #fff; color: var(--accent); } 
+nav { 
+display: flex; 
+gap: 8px; 
+padding: 12px 24px; 
+background: var(--card); 
+border-bottom: 1px solid var(--border); 
+flex-wrap: wrap; 
+} 
+nav button { 
+background: transparent; 
+color: var(--text); 
+border: 1px solid var(--border); 
+} 
+nav button.active { 
+background: var(--accent); 
+color: #fff; 
+border-color: var(--accent); 
+} 
+main { max-width: 1000px; margin: 20px auto; padding: 0 16px; } 
+.panel { display: none; } 
+.panel.show { display: block; } 
+.card { 
+background: var(--card); 
+border: 1px solid var(--border); 
+border-radius: 10px; 
+padding: 20px; 
+margin-bottom: 18px; 
+} 
+.card h2 { margin-top: 0; color: var(--accent); } 
+.row { display: flex; gap: 18px; flex-wrap: wrap; } 
+.col { flex: 1; min-width: 280px; } 
+label { display: block; margin: 12px 0 4px; font-weight: bold; font-size: 14px; } 
+ 
+input, select, textarea { 
+width: 100%; 
+padding: 9px; 
+border: 1px solid var(--border); 
+border-radius: 6px; 
+background: var(--bg); 
+color: var(--text); 
+font-size: 14px; 
+font-family: inherit; 
+} 
+textarea { resize: vertical; min-height: 90px; } 
+.error { color: var(--err); font-size: 12px; min-height: 16px; margin-top: 3px; } 
+.counter { font-size: 12px; color: var(--muted); text-align: right; } 
+.tip { 
+background: var(--bg); 
+border-left: 4px solid var(--accent); 
+padding: 10px 14px; 
+margin-top: 14px; 
+border-radius: 4px; 
+font-size: 14px; 
+} 
+.success { 
+background: #e6f6ed; 
+color: var(--ok); 
+padding: 10px 14px; 
+border-radius: 6px; 
+margin-top: 12px; 
+display: none; 
+} 
+.faq-item { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; } 
+.faq-q { 
+width: 100%; 
+text-align: left; 
+background: var(--card); 
+color: var(--text); 
+display: flex; 
+justify-content: space-between; 
+padding: 12px 14px; 
+} 
+.faq-a { display: none; padding: 0 14px 14px; font-size: 14px; color: var(--muted); } 
+.faq-item.open .faq-a { display: block; } 
+.preview { 
+background: #fff; 
+color: #111; 
+border: 1px solid var(--border); 
+padding: 22px; 
+font-family: "Times New Roman", serif; 
+line-height: 1.6; 
+font-size: 15px; 
+border-radius: 6px; 
+} 
+.preview h3 { text-align: center; text-decoration: underline; margin-top: 0; } 
+ul.list { list-style: none; padding: 0; margin: 0; } 
+ul.list li { 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+ 
+padding: 10px 12px; 
+border: 1px solid var(--border); 
+border-radius: 6px; 
+margin-bottom: 8px; 
+font-size: 14px; 
+gap: 10px; 
+} 
+ul.list li button { background: var(--err); padding: 5px 10px; font-size: 12px; } 
+.badge { 
+display: inline-block; 
+padding: 2px 8px; 
+border-radius: 10px; 
+background: var(--accent); 
+color: #fff; 
+font-size: 11px; 
+margin-right: 6px; 
+} 
+.empty { color: var(--muted); font-size: 14px; } 
+footer { 
+text-align: center; 
+font-size: 12px; 
+color: var(--muted); 
+padding: 20px; 
+} 
+</style> 
+</head> 
+<body> 
+<header> 
+<div> 
+<h1>&#9878; Legal Sphere</h1> 
+<p>Legal Advisory and Documentation</p> 
+</div> 
+<button id="themeBtn">Dark Mode</button> 
+</header> 
+<main> 
+<nav id="tabs"> 
+<button class="tab-btn active" data-target="advisory">Legal Advisory</button> 
+<button class="tab-btn" data-target="documents">Documentation</button> 
+<button class="tab-btn" data-target="faq">FAQs</button> 
+<button class="tab-btn" data-target="history">My Records</button> 
+</nav> 
+<section id="advisory" class="panel show"> 
+<div class="card"> 
+<h2>Request Legal Advice</h2> 
+<form id="adviceForm" novalidate> 
+<label for="clientName">Full Name</label> 
+<input type="text" id="clientName" placeholder="Enter your name"> 
+<div class="error" id="nameError"></div> 
+<label for="clientEmail">Email</label> 
+<input type="email" id="clientEmail" placeholder="you@example.com"> 
+<div class="error" id="emailError"></div> 
+ 
+ 
+        <label for="category">Legal Category</label> 
+        <select id="category"> 
+          <option value="">-- Select a category --</option> 
+          <option value="family">Family Law</option> 
+          <option value="property">Property Law</option> 
+          <option value="consumer">Consumer Protection</option> 
+          <option value="cyber">Cyber Law</option> 
+          <option value="labour">Labour and Employment</option> 
+        </select> 
+        <div class="error" id="categoryError"></div> 
+ 
+        <div class="tip" id="categoryTip">Select a category to see a quick tip.</div> 
+ 
+        <label for="query">Describe Your Issue</label> 
+        <textarea id="query" maxlength="300" placeholder="Write your legal question 
+here"></textarea> 
+        <div class="counter"><span id="charCount">0</span> / 300</div> 
+        <div class="error" id="queryError"></div> 
+ 
+        <label> 
+          <input type="checkbox" id="agree" style="width:auto"> I understand this is general 
+information and not a substitute for a licensed lawyer. 
+        </label> 
+ 
+        <br> 
+        <button type="submit" id="submitBtn" disabled>Submit Request</button> 
+        <div class="success" id="adviceSuccess"></div> 
+      </form> 
+    </div> 
+  </section> 
+ 
+  <section id="documents" class="panel"> 
+    <div class="row"> 
+      <div class="col card"> 
+        <h2>Rent Agreement Generator</h2> 
+        <label for="docType">Document Type</label> 
+        <select id="docType"> 
+          <option value="rent">Rent Agreement</option> 
+          <option value="affidavit">Affidavit</option> 
+        </select> 
+ 
+        <label for="partyOne" id="labelOne">Landlord Name</label> 
+        <input type="text" id="partyOne" placeholder="Landlord name"> 
+ 
+        <label for="partyTwo" id="labelTwo">Tenant Name</label> 
+        <input type="text" id="partyTwo" placeholder="Tenant name"> 
+ 
+        <label for="amount" id="labelAmount">Monthly Rent (Rs.)</label> 
+        <input type="number" id="amount" min="0" placeholder="e.g. 8000"> 
+ 
+        <label for="docDate">Date</label> 
+        <input type="date" id="docDate"> 
+ 
+        <label for="docNote">Additional Clause</label> 
+        <textarea id="docNote" placeholder="Optional extra clause"></textarea> 
+ 
+        <br><br> 
+  
+ 
+        <button id="saveDocBtn">Save Document</button> 
+        <button id="clearDocBtn" style="background:#667085">Clear</button> 
+        <div class="error" id="docError"></div> 
+      </div> 
+ 
+      <div class="col card"> 
+        <h2>Live Preview</h2> 
+        <div class="preview" id="docPreview"></div> 
+      </div> 
+    </div> 
+  </section> 
+ 
+  <section id="faq" class="panel"> 
+    <div class="card"> 
+      <h2>Frequently Asked Questions</h2> 
+      <input type="text" id="faqSearch" placeholder="Search FAQs..." style="margin
+bottom:14px"> 
+ 
+      <div class="faq-item"> 
+        <button class="faq-q"><span>What is an FIR?</span><span 
+class="sign">+</span></button> 
+        <div class="faq-a">A First Information Report is a written document prepared by the police 
+when they receive information about a cognizable offence.</div> 
+      </div> 
+      <div class="faq-item"> 
+        <button class="faq-q"><span>Is a rent agreement mandatory?</span><span 
+class="sign">+</span></button> 
+        <div class="faq-a">A written rent agreement is strongly recommended. Agreements longer 
+than eleven months usually need registration.</div> 
+      </div> 
+      <div class="faq-item"> 
+        <button class="faq-q"><span>How do I file a consumer complaint?</span><span 
+class="sign">+</span></button> 
+        <div class="faq-a">You can file a complaint with the Consumer Forum along with the bill, 
+warranty card and proof of the defect.</div> 
+      </div> 
+      <div class="faq-item"> 
+        <button class="faq-q"><span>What is an affidavit?</span><span 
+class="sign">+</span></button> 
+        <div class="faq-a">An affidavit is a written statement of facts confirmed by oath, used as 
+evidence or proof in legal matters.</div> 
+      </div> 
+      <div class="faq-item"> 
+        <button class="faq-q"><span>What should I do about cyber fraud?</span><span 
+class="sign">+</span></button> 
+        <div class="faq-a">Report it quickly on the National Cyber Crime Portal and inform your 
+bank immediately.</div> 
+      </div> 
+      <p class="empty" id="faqEmpty" style="display:none">No matching questions found.</p> 
+    </div> 
+  </section> 
+ 
+  <section id="history" class="panel"> 
+    <div class="row"> 
+      <div class="col card"> 
+        <h2>Advice Requests <span id="requestCount" class="badge">0</span></h2> 
+        <ul class="list" id="requestList"></ul> 
+ 
+ 
+        <p class="empty" id="requestEmpty">No requests submitted yet.</p> 
+      </div> 
+      <div class="col card"> 
+        <h2>Saved Documents <span id="docCount" class="badge">0</span></h2> 
+        <ul class="list" id="docList"></ul> 
+        <p class="empty" id="docEmpty">No documents saved yet.</p> 
+      </div> 
+    </div> 
+  </section> 
+ 
+</main> 
+ 
+<footer>Legal Sphere &copy; 2026 | For educational purposes only. Not legal advice.</footer> 
+ 
+<script> 
+const themeBtn = document.getElementById("themeBtn"); 
+const tabButtons = document.querySelectorAll(".tab-btn"); 
+const panels = document.querySelectorAll(".panel"); 
+ 
+const adviceForm = document.getElementById("adviceForm"); 
+const clientName = document.getElementById("clientName"); 
+const clientEmail = document.getElementById("clientEmail"); 
+const category = document.getElementById("category"); 
+const query = document.getElementById("query"); 
+const agree = document.getElementById("agree"); 
+const submitBtn = document.getElementById("submitBtn"); 
+const charCount = document.getElementById("charCount"); 
+const categoryTip = document.getElementById("categoryTip"); 
+const adviceSuccess = document.getElementById("adviceSuccess"); 
+ 
+const docType = document.getElementById("docType"); 
+const partyOne = document.getElementById("partyOne"); 
+const partyTwo = document.getElementById("partyTwo"); 
+const amount = document.getElementById("amount"); 
+const docDate = document.getElementById("docDate"); 
+const docNote = document.getElementById("docNote"); 
+const docPreview = document.getElementById("docPreview"); 
+const saveDocBtn = document.getElementById("saveDocBtn"); 
+const clearDocBtn = document.getElementById("clearDocBtn"); 
+const docError = document.getElementById("docError"); 
+ 
+const faqSearch = document.getElementById("faqSearch"); 
+const faqItems = document.querySelectorAll(".faq-item"); 
+const faqEmpty = document.getElementById("faqEmpty"); 
+ 
+const requestList = document.getElementById("requestList"); 
+const requestEmpty = document.getElementById("requestEmpty"); 
+const requestCount = document.getElementById("requestCount"); 
+const docList = document.getElementById("docList"); 
+const docEmpty = document.getElementById("docEmpty"); 
+const docCount = document.getElementById("docCount"); 
+ 
+const tips = { 
+  family: "Family matters like marriage, divorce and custody are handled by Family Courts. Keep 
+all documents ready.", 
+  property: "Always verify the title deed and get property documents registered with the Sub
+Registrar.", 
+ 
+consumer: "Keep bills, warranty cards and screenshots. You can approach the Consumer Forum 
+for defective goods or services.", 
+cyber: "Do not delete any evidence. Take screenshots and report on the National Cyber Crime 
+Portal.", 
+labour: "Keep your appointment letter and salary slips. Disputes can be raised with the Labour 
+Commissioner." 
+}; 
+function showError(id, message) { 
+document.getElementById(id).textContent = message; 
+} 
+function clearErrors() { 
+document.querySelectorAll(".error").forEach(function (el) { 
+el.textContent = ""; 
+}); 
+} 
+function escapeText(value) { 
+const div = document.createElement("div"); 
+div.textContent = value; 
+return div.innerHTML; 
+} 
+themeBtn.addEventListener("click", function () { 
+document.body.classList.toggle("dark"); 
+const isDark = document.body.classList.contains("dark"); 
+themeBtn.textContent = isDark ? "Light Mode" : "Dark Mode"; 
+}); 
+tabButtons.forEach(function (btn) { 
+btn.addEventListener("click", function () { 
+tabButtons.forEach(function (b) { 
+b.classList.remove("active"); 
+}); 
+panels.forEach(function (p) { 
+p.classList.remove("show"); 
+}); 
+btn.classList.add("active"); 
+document.getElementById(btn.dataset.target).classList.add("show"); 
+}); 
+}); 
+category.addEventListener("change", function () { 
+if (category.value === "") { 
+categoryTip.textContent = "Select a category to see a quick tip."; 
+} else { 
+categoryTip.textContent = tips[category.value]; 
+} 
+}); 
+query.addEventListener("input", function () { 
+charCount.textContent = query.value.length; 
+if (query.value.length >= 280) { 
+charCount.style.color = "#c0392b"; 
+} else { 
+charCount.style.color = ""; 
+ 
+ 
+  } 
+}); 
+ 
+agree.addEventListener("change", function () { 
+  submitBtn.disabled = !agree.checked; 
+}); 
+ 
+adviceForm.addEventListener("submit", function (event) { 
+  event.preventDefault(); 
+  clearErrors(); 
+  adviceSuccess.style.display = "none"; 
+  let valid = true; 
+ 
+  const name = clientName.value.trim(); 
+  const email = clientEmail.value.trim(); 
+  const text = query.value.trim(); 
+ 
+  if (name.length < 3) { 
+    showError("nameError", "Please enter a name with at least 3 characters."); 
+    valid = false; 
+  } 
+  if (!email.includes("@") || !email.includes(".")) { 
+    showError("emailError", "Please enter a valid email address."); 
+    valid = false; 
+  } 
+  if (category.value === "") { 
+    showError("categoryError", "Please select a legal category."); 
+    valid = false; 
+  } 
+  if (text.length < 15) { 
+    showError("queryError", "Please describe your issue in at least 15 characters."); 
+    valid = false; 
+  } 
+  if (!valid) { 
+    return; 
+  } 
+ 
+  const label = category.options[category.selectedIndex].text; 
+  const li = document.createElement("li"); 
+  li.innerHTML = 
+    "<span><span class='badge'>" + escapeText(label) + "</span>" + 
+    escapeText(name) + ": " + escapeText(text.substring(0, 50)) + 
+    (text.length > 50 ? "..." : "") + "</span>"; 
+ 
+  const del = document.createElement("button"); 
+  del.textContent = "Delete"; 
+  del.addEventListener("click", function () { 
+    li.remove(); 
+    updateCounts(); 
+  }); 
+  li.appendChild(del); 
+  requestList.appendChild(li); 
+  updateCounts(); 
+ 
+  adviceSuccess.textContent = "Thank you, " + name + ". Your " + label + " request has been 
+submitted."; 
+  adviceSuccess.style.display = "block"; 
+ 
+adviceForm.reset(); 
+charCount.textContent = "0"; 
+categoryTip.textContent = "Select a category to see a quick tip."; 
+submitBtn.disabled = true; 
+}); 
+function formatDate(value) { 
+if (!value) { 
+return "__________"; 
+} 
+const parts = value.split("-"); 
+return parts[2] + "-" + parts[1] + "-" + parts[0]; 
+} 
+function renderPreview() { 
+const one = partyOne.value.trim() || "__________"; 
+const two = partyTwo.value.trim() || "__________"; 
+const amt = amount.value ? "Rs. " + amount.value : "__________"; 
+const date = formatDate(docDate.value); 
+const note = docNote.value.trim(); 
+let html = ""; 
+if (docType.value === "rent") { 
+html = 
+"<h3>RENT AGREEMENT</h3>" + 
+"<p>This Rent Agreement is made on <b>" + date + "</b> between <b>" + escapeText(one) + 
+"</b> (hereinafter called the Landlord) and <b>" + escapeText(two) + 
+"</b> (hereinafter called the Tenant).</p>" + 
+"<p>1. The Tenant shall pay a monthly rent of <b>" + escapeText(amt) + "</b> on or before 
+the 5th of every month.</p>" + 
+"<p>2. The tenancy period shall be eleven months from the date of this agreement.</p>" + 
+"<p>3. The Tenant shall keep the premises in good condition and shall not sublet it.</p>"; 
+} else { 
+html = 
+"<h3>AFFIDAVIT</h3>" + 
+"<p>I, <b>" + escapeText(one) + "</b>, son/daughter of <b>" + escapeText(two) + 
+"</b>, do hereby solemnly affirm and declare as follows:</p>" + 
+"<p>1. That the facts stated in this affidavit are true and correct to the best of my 
+knowledge.</p>" + 
+"<p>2. That the stated amount of <b>" + escapeText(amt) + "</b> is declared by me 
+truthfully.</p>" + 
+"<p>Date: <b>" + date + "</b></p>"; 
+} 
+if (note !== "") { 
+html += "<p>Additional Clause: " + escapeText(note) + "</p>"; 
+} 
+html += "<p style='margin-top:30px'>Signature: ____________________</p>"; 
+docPreview.innerHTML = html; 
+} 
+function updateLabels() { 
+if (docType.value === "rent") { 
+document.getElementById("labelOne").textContent = "Landlord Name"; 
+document.getElementById("labelTwo").textContent = "Tenant Name"; 
+document.getElementById("labelAmount").textContent = "Monthly Rent (Rs.)"; 
+ 
+partyOne.placeholder = "Landlord name"; 
+partyTwo.placeholder = "Tenant name"; 
+docPreview.previousElementSibling.textContent = "Live Preview"; 
+} else { 
+document.getElementById("labelOne").textContent = "Declarant Name"; 
+document.getElementById("labelTwo").textContent = "Father / Mother Name"; 
+document.getElementById("labelAmount").textContent = "Declared Amount (Rs.)"; 
+partyOne.placeholder = "Declarant name"; 
+partyTwo.placeholder = "Parent name"; 
+} 
+} 
+docType.addEventListener("change", function () { 
+updateLabels(); 
+renderPreview(); 
+}); 
+[partyOne, partyTwo, amount, docDate, docNote].forEach(function (field) { 
+field.addEventListener("input", renderPreview); 
+}); 
+saveDocBtn.addEventListener("click", function () { 
+docError.textContent = ""; 
+if (partyOne.value.trim() === "" || partyTwo.value.trim() === "") { 
+docError.textContent = "Please fill both name fields before saving."; 
+return; 
+} 
+const li = document.createElement("li"); 
+const title = docType.options[docType.selectedIndex].text; 
+li.innerHTML = 
+"<span><span class='badge'>" + title + "</span>" + 
+escapeText(partyOne.value.trim()) + " &amp; " + escapeText(partyTwo.value.trim()) + 
+"</span>"; 
+const del = document.createElement("button"); 
+del.textContent = "Delete"; 
+del.addEventListener("click", function () { 
+li.remove(); 
+updateCounts(); 
+}); 
+li.appendChild(del); 
+docList.appendChild(li); 
+updateCounts(); 
+docError.style.color = "#1a7f4b"; 
+docError.textContent = "Document saved to My Records."; 
+setTimeout(function () { 
+docError.textContent = ""; 
+docError.style.color = ""; 
+}, 2500); 
+}); 
+clearDocBtn.addEventListener("click", function () { 
+partyOne.value = ""; 
+partyTwo.value = ""; 
+amount.value = ""; 
+docDate.value = ""; 
+docNote.value = ""; 
+ 
+docError.textContent = ""; 
+renderPreview(); 
+}); 
+document.querySelectorAll(".faq-q").forEach(function (btn) { 
+btn.addEventListener("click", function () { 
+const item = btn.parentElement; 
+item.classList.toggle("open"); 
+btn.querySelector(".sign").textContent = item.classList.contains("open") ? "-" : "+"; 
+}); 
+}); 
+faqSearch.addEventListener("input", function () { 
+const term = faqSearch.value.toLowerCase().trim(); 
+let visible = 0; 
+faqItems.forEach(function (item) { 
+const text = item.textContent.toLowerCase(); 
+if (text.includes(term)) { 
+item.style.display = "block"; 
+visible++; 
+} else { 
+item.style.display = "none"; 
+} 
+}); 
+faqEmpty.style.display = visible === 0 ? "block" : "none"; 
+}); 
+function updateCounts() { 
+const requests = requestList.children.length; 
+const docs = docList.children.length; 
+requestCount.textContent = requests; 
+docCount.textContent = docs; 
+requestEmpty.style.display = requests === 0 ? "block" : "none"; 
+docEmpty.style.display = docs === 0 ? "block" : "none"; 
+} 
+docDate.valueAsDate = new Date(); 
+updateLabels(); 
+renderPreview(); 
+updateCounts(); 
+</script> 
+</body> 
+</html>
